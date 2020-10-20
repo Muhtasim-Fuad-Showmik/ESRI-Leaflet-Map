@@ -1,22 +1,30 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Leaflet Map with a Basemap</title>
-  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+	<meta charset="utf-8">
+	<title>Leaflet Map with a Basemap</title>
+	<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
 
-   <!-- lets load Leaflet's .js and .css from CDN-->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-    crossorigin=""/>
-  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-    crossorigin=""></script>  
+	<!-- lets load Leaflet's .js and .css from CDN-->
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+	integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+	crossorigin=""/>
 
-  <!-- Load Esri Leaflet from CDN.  it has no .css stylesheet of its own, only .js -->
-  <script src="https://unpkg.com/esri-leaflet@2.5.1/dist/esri-leaflet.js"
-    integrity="sha512-q7X96AASUF0hol5Ih7AeZpRF6smJS55lcvy+GLWzJfZN+31/BQ8cgNx2FGF+IQSA4z2jHwB20vml+drmooqzzQ=="
-    crossorigin=""></script>
+	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+	integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+	crossorigin=""></script>  
+
+	<!-- Load Esri Leaflet from CDN.  it has no .css stylesheet of its own, only .js -->
+	<script src="https://unpkg.com/esri-leaflet@2.5.1/dist/esri-leaflet.js"
+	integrity="sha512-q7X96AASUF0hol5Ih7AeZpRF6smJS55lcvy+GLWzJfZN+31/BQ8cgNx2FGF+IQSA4z2jHwB20vml+drmooqzzQ=="
+	crossorigin=""></script>
+
+<!--
+    //Load Esri Leaflet Renderers from CDN
+	<script src="https://unpkg.com/esri-leaflet-renderers@2.1.2/dist/esri-leaflet-renderers.js"
+	integrity="sha512-/McnqdlwYvfeOEWqoniEagFRQnLi/TNbkHe4EJypmZI02LBT7vBU/+PZ5W3FSsFFlRbnMCsJvnbp5MX8XOBrnQ=="
+	crossorigin=""></script>
+//-->
 
     <style>
     	html,
@@ -33,10 +41,22 @@
 	<div id="map"></div>
 	<script>
 	    const map = L.map('map', {
-	      center: [23.81, 90.41],
-	      zoom: 7
+	      center: [45.526, -122.667],
+	      zoom: 13
+
+	      // To focus on the map of Bangladesh
+	      // center: [23.81, 90.41],
+	      // zoom: 7
 	    });
 	    L.esri.basemapLayer('Streets').addTo(map);
+
+		const portlandHeritageTrees = L.esri.featureLayer({
+		  url: 'https://www.portlandmaps.com/arcgis/rest/services/Public/Parks_Misc/MapServer/21/'
+		}).addTo(map);
+
+		portlandHeritageTrees.bindPopup(function (evt) {
+		  return L.Util.template('<h3>{COMMON}</h3><hr/><p>This tree is located at {SITE_ADDRESS} and its scientific name is {SCIENTIFIC}.', evt.feature.properties);
+		});
 	</script>
 </body>
 </html>
